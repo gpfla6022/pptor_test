@@ -1,0 +1,65 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/pptForm}">
+
+    <head>
+        <title th:text="#{title.article.write}">온라인 마크다운 PPT 서비스! 피피토 | PPT 작성</title>
+        <script>
+            function write__submit(form){
+
+                form.title.value = form.title.value.trim();
+
+                if ( form.title.value.length == 0 ) {
+                    alert('제목을 입력하여 주시기 바랍니다.');
+                    form.title.focus();
+                    return;
+                }
+
+                const bodyEditor = $(form).find('.toast-ui-body').data('data-toast-editor');
+                const markdown = bodyEditor.getMarkdown().trim();
+                const html = bodyEditor.getHTML().trim();
+
+                if ( markdown.length == 0 ) {
+                    bodyEditor.focus();
+                    alert('내용을 입력하여 주시기 바랍니다.');
+                    return;
+                }
+
+                form.markdown.value = markdown;
+                form.html.value = html;
+
+                form.submit();
+
+            }
+        </script>
+    </head>
+
+    <!-- 임시 -->
+    <div layout:fragment="content" class="px-4 py-15">
+
+        <div class="mb-10"></div>
+
+        <form action="../article/doWrite" th:action th:object="${articleSaveForm}" method="post" onsubmit="write__submit(this); return false;">
+            <input type="hidden" name="markdown">
+            <input type="hidden" name="html">
+            <div class="title-wrapper flex justify-center">
+                <input th:field="*{title}" th:errorclass="field-error" type="text" name="title" th:placeholder="#{usr.article.title}" class="w-full border px-2 py-2 text-center">
+                <div class="field-error" th:errors="*{title}">
+                    제목을 입력해주세요.
+                </div>
+            </div>
+            <div class="toast-ui-editor toast-ui-body" data-toast-editor-height="100%;"></div>
+            <div class="flex justify-center py-4">
+                <button th:text="#{usr.article.save}" type="submit" class="bg-gray-500 hover:bg-black text-white font-bold py-2 px-4 rounded duration-300">PPT 저장</button>
+                <div class="flex items-center justify-center text-gray-500 text-lg">
+                    <a th:text="#{button.cancel}" href="/" class="ml-3 bg-gray-500 hover:bg-black text-white font-bold py-2 px-4 rounded duration-300">취소</a>
+                </div>
+            </div>
+        </form>
+
+        <div class="mb-10"></div>
+
+    </div>
+
+</html>
