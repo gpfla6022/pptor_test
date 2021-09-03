@@ -21,8 +21,6 @@ public class Board {
     @Column(name = "name")
     private String name;
 
-
-
     @Column(name = "reg_date")
     private LocalDateTime regDate;
     @Column(name = "update_date")
@@ -45,6 +43,8 @@ public class Board {
         Board board = new Board();
 
         board.name = name;
+        board.regDate = LocalDateTime.now();
+        board.updateDate = LocalDateTime.now();
 
         return board;
 
