@@ -60,4 +60,10 @@ public class MemberRepository {
 
     }
 
+    // 회원수 찾기
+    public Long count(){
+        return em.createQuery("select count(m) from Member m", Long.class)
+                .getSingleResult();
+    }
+
 }
